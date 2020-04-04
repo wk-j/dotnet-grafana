@@ -1,8 +1,16 @@
 ## Grafana
 
-```
+```bash
 dotnet add src/MyWeb/MyWeb.csproj package prometheus-net
 dotnet add src/MyWeb/MyWeb.csproj package prometheus-net.AspNetCore
+```
+
+## App Metircs
+
+```
+2204
+dotnet add src/MyWeb/MyWeb.csproj package App.Metrics.AspNetCore.Mvc
+
 
 docker-compose up --build
 

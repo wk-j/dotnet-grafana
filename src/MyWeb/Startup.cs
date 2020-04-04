@@ -2,15 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Metrics;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Prometheus;
 
 namespace MyWeb {
     public class Startup {
@@ -22,6 +23,18 @@ namespace MyWeb {
 
         public void ConfigureServices(IServiceCollection services) {
             services.AddControllers();
+            services.Configure<KestrelServerOptions>(options =>
+                options.AllowSynchronousIO = true
+            );
+
+            var metrics = AppMetrics.CreateDefaultBuilder()
+                .OutputMetrics.AsPlainText()
+                .Build();
+
+            services.AddMetrics(metrics);
+            services.AddMetricsTrackingMiddleware();
+            services.AddMetricsReportingHostedService();
+            services.AddMetricsEndpoints();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
@@ -33,8 +46,10 @@ namespace MyWeb {
 
             app.UseRouting();
 
-            app.UseHttpMetrics();
-            app.UseMetricServer();
+            // app.UseHttpMetrics();
+            // app.UseMetricServer();
+
+            app.UseMetricsAllEndpoints();
 
             app.UseAuthorization();
 
