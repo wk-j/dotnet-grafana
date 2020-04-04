@@ -1,10 +1,18 @@
 version: "3.1"
 
 services:
+
+  app:
+    build:
+      context: .
+      dockerfile: src/MyWeb/Dockerfile
+    ports:
+      - 80:80
+
   prometheus:
     image: prom/prometheus
     ports:
       - 9090:9090
 
-    # volumes:
-    #   - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
