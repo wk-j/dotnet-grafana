@@ -4,7 +4,7 @@
 dotnet add src/MyWeb/MyWeb.csproj package App.Metrics.AspNetCore
 dotnet add src/MyWeb/MyWeb.csproj package App.Metrics.AspNetCore.Mvc
 dotnet add src/MyWeb/MyWeb.csproj package App.Metrics.Formatters.Prometheus
-```bash
+```
 
 ## Start
 
