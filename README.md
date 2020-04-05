@@ -1,26 +1,35 @@
-## Grafana
+## Install
 
 ```bash
-dotnet add src/MyWeb/MyWeb.csproj package prometheus-net
-dotnet add src/MyWeb/MyWeb.csproj package prometheus-net.AspNetCore
-```
-
-## App Metircs
-
-```
-2204
+dotnet add src/MyWeb/MyWeb.csproj package App.Metrics.AspNetCore
 dotnet add src/MyWeb/MyWeb.csproj package App.Metrics.AspNetCore.Mvc
+dotnet add src/MyWeb/MyWeb.csproj package App.Metrics.Formatters.Prometheus
+```bash
 
+## Start
 
+```bash
 docker-compose up --build
-
-curl http://localhost:5000/WeatherForecast
-open http://localhost:5000/metrics
+open http://localhost:9090
+open http://localhost:3000
 ```
 
-## Prometheus
+## API
 
-- http://localhost:9090
+```bash
+2204
+curl http://localhost:5000/metrics
+curl http://localhost:5000/metrics-text
+curl http://localhost:5000/env
+curl http://localhost:5000/WeatherForecast
+
+curl http://localhost/metrics
+curl http://localhost/metrics-text
+curl http://localhost/env
+curl http://localhost/WeatherForecast
+
+wrk -t12 -c400 -d30s http://127.0.0.1/WeatherForecast
+```
 
 ## Resource
 

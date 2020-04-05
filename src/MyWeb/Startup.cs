@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using App.Metrics.AspNetCore;
 
 namespace MyWeb {
     public class Startup {
@@ -31,25 +32,16 @@ namespace MyWeb {
                 .OutputMetrics.AsPlainText()
                 .Build();
 
-            services.AddMetrics(metrics);
-            services.AddMetricsTrackingMiddleware();
-            services.AddMetricsReportingHostedService();
-            services.AddMetricsEndpoints();
+            services.AddMvcCore().AddMetricsCore();
         }
+
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
 
-            // app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            // app.UseHttpMetrics();
-            // app.UseMetricServer();
-
-            app.UseMetricsAllEndpoints();
 
             app.UseAuthorization();
 
